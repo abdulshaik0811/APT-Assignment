@@ -1,4 +1,9 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -e
-cd "$(dirname "$0")/../terraform"
+
+echo "Destroying infrastructure..."
+
+cd terraform
 terraform destroy -auto-approve
+
+echo "Infrastructure destroyed successfully!"
