@@ -1,8 +1,16 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -e
-cd "$(dirname "$0")/../terraform"
-terraform init -input=false
+
+echo "Starting deployment..."
+
+# Initialize Terraform
+cd terraform
+terraform init
+
+# Apply Terraform
 terraform apply -auto-approve
-echo
-echo "ALB DNS:"
-terraform output -raw alb_dns_name || terraform output alb_dns_name
+
+# Get ALB DNS
+ALB_DNS=$(terraform output -raw alb_dns_name)
+echo "ALB DNS Name: http://$ALB_DNS"
+echo "Deployment complete!"
