@@ -14,12 +14,12 @@ data "aws_ami" "amazon_linux_2" {
   }
 }
 
-# User data script
+# User data script - make sure the file exists
 data "template_file" "user_data" {
   template = file("${path.module}/user-data.sh")
 
   vars = {
-    app_port = var.app_port
+    app_port = var.app_port  # This passes the variable to the script
   }
 }
 
