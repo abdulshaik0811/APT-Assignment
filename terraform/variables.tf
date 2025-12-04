@@ -1,63 +1,77 @@
 variable "aws_region" {
-  type    = string
-  default = "us-east-1"
+  description = "AWS region to deploy resources"
+  type        = string
+  default     = "us-east-1"
+}
+
+variable "project_name" {
+  description = "Name of the project"
+  type        = string
+  default     = "devops-assignment"
+}
+
+variable "environment" {
+  description = "Environment name"
+  type        = string
+  default     = "test"
 }
 
 variable "vpc_cidr" {
-  type    = string
-  default = "10.0.0.0/16"
+  description = "CIDR block for VPC"
+  type        = string
+  default     = "10.0.0.0/16"
 }
 
 variable "public_subnet_cidrs" {
-  type    = list(string)
-  default = [
-    "10.0.1.0/24",
-    "10.0.2.0/24"
-  ]
+  description = "CIDR blocks for public subnets"
+  type        = list(string)
+  default     = ["10.0.1.0/24", "10.0.2.0/24"]
 }
 
 variable "private_subnet_cidrs" {
-  type    = list(string)
-  default = [
-    "10.0.11.0/24",
-    "10.0.12.0/24"
-  ]
+  description = "CIDR blocks for private subnets"
+  type        = list(string)
+  default     = ["10.0.3.0/24", "10.0.4.0/24"]
+}
+
+variable "availability_zones" {
+  description = "Availability zones"
+  type        = list(string)
+  default     = ["us-east-1a", "us-east-1b"]
 }
 
 variable "instance_type" {
-  type    = string
-  default = "t3.micro"
-}
-
-variable "min_size" {
-  type    = number
-  default = 1
+  description = "EC2 instance type"
+  type        = string
+  default     = "t2.micro"
 }
 
 variable "desired_capacity" {
-  type    = number
-  default = 1
+  description = "Desired number of instances in ASG"
+  type        = number
+  default     = 2
+}
+
+variable "min_size" {
+  description = "Minimum number of instances in ASG"
+  type        = number
+  default     = 2
 }
 
 variable "max_size" {
-  type    = number
-  default = 2
+  description = "Maximum number of instances in ASG"
+  type        = number
+  default     = 4
 }
 
-variable "key_name" {
-  type        = string
-  default     = ""
-  description = "Optional: EC2 key pair name. Leave empty if using SSM only."
+variable "app_port" {
+  description = "Port on which application runs"
+  type        = number
+  default     = 8080
 }
 
-variable "app_repo" {
+variable "health_check_path" {
+  description = "Path for health check"
   type        = string
-  default     = ""
-  description = "Optional GitHub repo URL (must be public)."
-}
-
-variable "app_dir" {
-  type        = string
-  default     = "app"
-  description = "App folder name inside the repo."
+  default     = "/health"
 }
