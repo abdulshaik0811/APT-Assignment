@@ -1,23 +1,49 @@
 resource "aws_security_group" "alb_sg" {
-  name = "oneclick-alb-sg"
-  description = "HTTP from internet"
-  vpc_id = aws_vpc.main.id
+  name        = "oneclick-alb-sg"
+  description = "Allow HTTP from internet"
+  vpc_id      = aws_vpc.main.id
 
   ingress {
-    from_port = 80; to_port = 80; protocol = "tcp"; cidr_blocks = ["0.0.0.0/0"]
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow HTTP"
   }
-  egress { from_port = 0; to_port = 0; protocol = "-1"; cidr_blocks = ["0.0.0.0/0"] }
-  tags = { Name = "oneclick-alb-sg" }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "oneclick-alb-sg"
+  }
 }
 
 resource "aws_security_group" "app_sg" {
-  name = "oneclick-app-sg"
-  description = "Allow ALB -> app 8080"
-  vpc_id = aws_vpc.main.id
+  name        = "oneclick-app-sg"
+  description = "Allow traffic from ALB only"
+  vpc_id      = aws_vpc.main.id
 
   ingress {
-    from_port = 8080; to_port = 8080; protocol = "tcp"; security_groups = [aws_security_group.alb_sg.id]
+    from_port       = 8080
+    to_port         = 8080
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb_sg.id]
+    description     = "Allow ALB to app"
   }
-  egress { from_port = 0; to_port = 0; protocol = "-1"; cidr_blocks = ["0.0.0.0/0"] }
-  tags = { Name = "oneclick-app-sg" }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "oneclick-app-sg"
+  }
 }
