@@ -1,27 +1,20 @@
-###############################
-# LOAD BALANCER OUTPUT
-###############################
+############################################
+# OUTPUT: ALB DNS NAME
+############################################
 output "alb_dns_name" {
   value = aws_lb.alb.dns_name
 }
 
-###############################
-# AUTOSCALING GROUP NAME
-###############################
-output "asg_name" {
-  value = aws_autoscaling_group.asg.name
-}
-
-###############################
-# VPC ID
-###############################
+############################################
+# OUTPUT: VPC ID
+############################################
 output "vpc_id" {
   value = aws_vpc.main.id
 }
 
-###############################
-# PRIVATE SUBNET IDs
-###############################
+############################################
+# OUTPUT: PRIVATE SUBNET IDS
+############################################
 output "private_subnets" {
   value = [for s in aws_subnet.private : s.id]
 }
