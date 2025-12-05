@@ -1,43 +1,19 @@
 variable "aws_region" {
-  description = "AWS region to deploy resources"
+  description = "AWS region"
   type        = string
   default     = "us-east-1"
 }
 
 variable "project_name" {
-  description = "Name of the project"
+  description = "Project name for resources"
   type        = string
-  default     = "devops-assignment"
-}
-
-variable "environment" {
-  description = "Environment name"
-  type        = string
-  default     = "test"
+  default     = "terraform-alb-asg"
 }
 
 variable "vpc_cidr" {
-  description = "CIDR block for VPC"
+  description = "VPC CIDR block"
   type        = string
   default     = "10.0.0.0/16"
-}
-
-variable "public_subnet_cidrs" {
-  description = "CIDR blocks for public subnets"
-  type        = list(string)
-  default     = ["10.0.1.0/24", "10.0.2.0/24"]
-}
-
-variable "private_subnet_cidrs" {
-  description = "CIDR blocks for private subnets"
-  type        = list(string)
-  default     = ["10.0.3.0/24", "10.0.4.0/24"]
-}
-
-variable "availability_zones" {
-  description = "Availability zones"
-  type        = list(string)
-  default     = ["us-east-1a", "us-east-1b"]
 }
 
 variable "instance_type" {
@@ -47,31 +23,25 @@ variable "instance_type" {
 }
 
 variable "desired_capacity" {
-  description = "Desired number of instances in ASG"
-  type        = number
-  default     = 2
-}
-
-variable "min_size" {
-  description = "Minimum number of instances in ASG"
+  description = "ASG desired capacity"
   type        = number
   default     = 2
 }
 
 variable "max_size" {
-  description = "Maximum number of instances in ASG"
+  description = "ASG maximum size"
   type        = number
-  default     = 4
+  default     = 3
 }
 
-variable "app_port" {
-  description = "Port on which application runs"
+variable "min_size" {
+  description = "ASG minimum size"
   type        = number
-  default     = 8080
+  default     = 1
 }
 
-variable "health_check_path" {
-  description = "Path for health check"
+variable "key_name" {
+  description = "SSH key pair name"
   type        = string
-  default     = "/health"
+  default     = ""
 }
