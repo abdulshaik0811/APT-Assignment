@@ -1,7 +1,7 @@
 # IAM Role for EC2
 resource "aws_iam_role" "ec2_role" {
   name = "${var.project_name}-ec2-role"
-  
+
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -14,32 +14,39 @@ resource "aws_iam_role" "ec2_role" {
       }
     ]
   })
-  
-  tags = {
-    Name = "${var.project_name}-ec2-role"
-  }
 }
 
-# IAM Policy for SSM
-resource "aws_iam_policy_attachment" "ssm_policy" {
-  name       = "${var.project_name}-ssm-policy-attachment"
-  roles      = [aws_iam_role.ec2_role.name]
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-}
-
-# IAM Policy for CloudWatch
-resource "aws_iam_policy_attachment" "cloudwatch_policy" {
-  name       = "${var.project_name}-cloudwatch-policy-attachment"
-  roles      = [aws_iam_role.ec2_role.name]
-  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
-}
-
-# IAM Instance Profile
 resource "aws_iam_instance_profile" "ec2_profile" {
-  name = "${var.project_name}-ec2-instance-profile"
+  name = "${var.project_name}-ec2-profile"
   role = aws_iam_role.ec2_role.name
-  
-  tags = {
-    Name = "${var.project_name}-ec2-instance-profile"
-  }
+}
+
+# IAM Policy for EC2
+resource "aws_iam_role_policy" "ec2_policy" {
+  name = "${var.project_name}-ec2-policy"
+  role = aws_iam_role.ec2_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:DescribeLogStreams"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+      {
+        Action = [
+          "ec2:DescribeInstances",
+          "ec2:DescribeTags"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      }
+    ]
+  })
 }
